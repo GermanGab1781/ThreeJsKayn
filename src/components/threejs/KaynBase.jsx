@@ -1,0 +1,155 @@
+import { useRef, useEffect, useState } from 'react';
+import * as T from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import MODEL from '../../media/models/KaynNoMetallic.glb';
+import Ability from '../../components/Ability'
+import Passiveimg from '../../media/images/abilities/base/Passive.png'
+import Qimg from '../../media/images/abilities/base/Q.png'
+import Wimg from '../../media/images/abilities/base/W.png'
+import Eimg from '../../media/images/abilities/base/E.png'
+import Rimg from '../../media/images/abilities/base/R1.png'
+
+const KaynBase = () => {
+  const mountRef = useRef(null)
+  const [mixer, setMixer] = useState(undefined);
+  const [clips, setClips] = useState(undefined);
+  const [idle, setIdle] = useState(undefined);
+
+  useEffect(() => {
+    const currentRef = mountRef.current;
+    const { clientWidth: width, clientHeight: height } = currentRef;
+    let mixer;
+
+    //escena y camara
+    const scene = new T.Scene();
+    scene.background = new T.Color("black")
+    //Add light
+    const light = new T.AmbientLight("red");
+    scene.add(light);
+    const camera = new T.PerspectiveCamera(100, width / height, 0.01, 1000);
+    camera.position.z = 250;
+    camera.position.y = 150;
+    scene.add(camera);
+
+    //reloj
+    const clock = new T.Clock();
+
+    //renderizador
+    const renderer = new T.WebGLRenderer();
+    renderer.setSize(width, height);
+    currentRef.appendChild(renderer.domElement);
+
+    //controles de camara
+    const controls = new OrbitControls(camera, renderer.domElement);
+    //#endregion
+
+    //Modelo Loader con Animaciones
+    const loader = new GLTFLoader();
+    loader.load(MODEL, function (gltf) {
+      const model = gltf.scene;
+      scene.add(model);
+      mixer = new T.AnimationMixer(model);
+      const clips = gltf.animations;
+      //guardo en UseState para poder cambiar animacion OnClick
+      setMixer(mixer)
+      setClips(clips)
+
+      //idle loop
+      const clip3 = T.AnimationClip.findByName(clips, "kayn_idle1_loop.anm");
+      const idleLoop = mixer.clipAction(clip3);
+      setIdle(idleLoop);
+      idleLoop.play();
+
+      //Q part 2
+      const Q2 = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_circle.anm"));
+      Q2.setLoop(T.LoopOnce)
+      Q2.clampWhenFinished=true;
+
+
+      mixer.addEventListener('finished', function (e) {
+        //console.log("animation", e.action._clip.name, "finished");
+        if (e.action._clip.name === "kayn_spell1_dash.anm") {
+          mixer._actions[e.action._cacheIndex].crossFadeTo(Q2.reset().play(), 0.2)
+        }else {
+          mixer._actions[e.action._cacheIndex].crossFadeTo(idleLoop.reset().play(), 0.4)
+        }
+      })
+
+    }, undefined, function (err) {
+      console.log(err)
+    });
+
+    //excecute function
+    const animate = () => {
+      if (mixer != null) {
+        mixer.update(clock.getDelta());
+      }
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    };
+    //excecute
+    animate();
+    return () => {
+      currentRef.removeChild(renderer.domElement);
+    }
+  }, []);
+
+  function test(index) {
+    if (mixer !== undefined && clips !== undefined) { 
+      //#region clips
+      const idleAnim = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_idle2.anm"));
+      const Q = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_dash.anm"));
+      Q.clampWhenFinished = true;
+      const W = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_stop.anm"));
+      W.clampWhenFinished = true;
+      //#endregion
+      console.log(mixer._actions)
+      switch (index) {
+        case 1:
+          idleAnim.setLoop(T.LoopOnce)
+          mixer._actions[0].fadeOut(0.1);
+          mixer._actions[0].crossFadeTo(idleAnim.reset().play(), 0.2);
+          break;
+        case 2:          
+          Q.setLoop(T.LoopOnce)
+          mixer._actions[0].fadeOut(0.1);
+          mixer._actions[0].crossFadeTo(Q.reset().play(), 0.2);
+          break;
+        case 3:          
+          W.setLoop(T.LoopOnce)
+          mixer._actions[0].fadeOut(0.1);
+          mixer._actions[0].crossFadeTo(W.reset().play(), 0.2);
+          break;
+        case 4:
+          break;
+        case 5:
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  return (
+    <div>
+      <div className='absolute' ref={mountRef} style={{ width: "100%", height: "100vh" }}></div>
+      <div className='text-white text-center absolute top-1 left-1/2 transform -translate-x-1/2 border'>
+        <div>Kayn</div>
+        <div>Base Form</div>
+      </div>
+      <div className='text-white w-screen  text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg border'>
+        <span>Abilities</span>
+        <div className='flex justify-center'>
+          <Ability onC={() => test(1)} name="Passive" img={Passiveimg} />
+          <Ability onC={() => test(2)} name="Q" img={Qimg} />
+          <Ability onC={() => test(3)} name="W" img={Wimg} />
+          <Ability onC={() => test(4)} name="E" img={Eimg} />
+          <Ability onC={() => test(5)} name="R" img={Rimg} />
+        </div>
+      </div>
+    </div>
+  )
+};
+
+export default KaynBase;
