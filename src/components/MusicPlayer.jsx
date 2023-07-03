@@ -21,7 +21,7 @@ export default function MusicPlayer({theme}) {
   }
 
   return (
-    <div className='absolute bg-stone-500 z-40 top-2 border right-0 w-1/5 text-center'>
+    <div className='absolute bg-stone-500 z-40 top-2 border right-0 md:w-1/5 w-1/2 text-center'>
       <div>Music</div>
       <div className='flex justify-center gap-2'>
         <div className='cursor-pointer border border-black bg-stone-300' onClick={play}>
