@@ -9,6 +9,15 @@ import Qimg from '../../media/images/abilities/base/Q.png'
 import Wimg from '../../media/images/abilities/base/W.png'
 import Eimg from '../../media/images/abilities/base/E.png'
 import Rimg from '../../media/images/abilities/base/R1.png'
+
+import RLaugh from '../../media/audio/base/Kayn_R_Laugh.mp3'
+import RIn from '../../media/audio/base/Kayn_R_in.mp3'
+import Ewalk from '../../media/audio/base/Kayn_E_Quote.mp3'
+import WGrnt from '../../media/audio/base/Kayn_W_Grunt.mp3'
+import QGrnt from '../../media/audio/base/Kayn_Q_Grunt.mp3'
+
+
+
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion'
 
@@ -19,6 +28,12 @@ const KaynBase = () => {
   const [idle, setIdle] = useState(undefined);
   const [buttons, setButtons] = useState(true);
   const [model,setModel] = useState(undefined);
+
+  const RQuote = new Audio(RLaugh);
+  const RInside = new Audio(RIn);
+  const Ewall = new Audio(Ewalk)
+  const WGrunt = new Audio(WGrnt)
+  const QGrunt = new Audio(QGrnt)
  
   useEffect(() => {
     const currentRef = mountRef.current;
@@ -27,7 +42,7 @@ const KaynBase = () => {
 
     //escena y camara
     const scene = new T.Scene();
-    scene.background = new T.Color("black")
+    scene.background = new T.Color("grey")
     //Add light
     const light = new T.AmbientLight("red");
     scene.add(light);
@@ -150,19 +165,23 @@ const KaynBase = () => {
         case 2:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(Q.reset().play(), 0.2);
+          QGrunt.play()
           break;
         case 3:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(W.reset().play(), 0.2);
+          WGrunt.play();
           break;
         case 4:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(E.reset().play(), 0.2);
+          Ewall.play();
           break;
         case 5:
           model.position.y= -400;
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
+          RInside.play().finally(()=>{RQuote.play();})
           break;
         default:
           break;
