@@ -9,13 +9,17 @@ import Qimg from '../../media/images/abilities/base/Q.png'
 import Wimg from '../../media/images/abilities/base/W.png'
 import Eimg from '../../media/images/abilities/base/E.png'
 import Rimg from '../../media/images/abilities/base/R1.png'
+import { NavLink } from 'react-router-dom';
+import { motion } from 'framer-motion'
 
 const KaynBase = () => {
   const mountRef = useRef(null)
   const [mixer, setMixer] = useState(undefined);
   const [clips, setClips] = useState(undefined);
   const [idle, setIdle] = useState(undefined);
-
+  const [buttons, setButtons] = useState(true);
+  const [model,setModel] = useState(undefined);
+ 
   useEffect(() => {
     const currentRef = mountRef.current;
     const { clientWidth: width, clientHeight: height } = currentRef;
@@ -23,13 +27,13 @@ const KaynBase = () => {
 
     //escena y camara
     const scene = new T.Scene();
-    scene.background = new T.Color("grey")
+    scene.background = new T.Color("black")
     //Add light
-    const light = new T.AmbientLight("orange");
+    const light = new T.AmbientLight("red");
     scene.add(light);
-    const camera = new T.PerspectiveCamera(100, width / height, 0.01, 1000);
+    const camera = new T.PerspectiveCamera(100, width / height, 0.01, 10000);
     camera.position.z = 250;
-    camera.position.y = 150;
+    camera.position.y = 50;
     scene.add(camera);
 
     //reloj
@@ -48,7 +52,9 @@ const KaynBase = () => {
     const loader = new GLTFLoader();
     loader.load(MODEL, function (gltf) {
       const model = gltf.scene;
+      setModel(model)
       scene.add(model);
+      model.position.set(0,-125,0)
       mixer = new T.AnimationMixer(model);
       const clips = gltf.animations;
       //guardo en UseState para poder cambiar animacion OnClick
@@ -88,9 +94,11 @@ const KaynBase = () => {
           mixer._actions[e.action._cacheIndex].crossFadeTo(E2.reset().play(), 0.2)
         } else if (e.action._clip.name === "kayn_spell4_air.anm") {
           mixer._actions[e.action._cacheIndex].crossFadeTo(R2.reset().play(), 0.2)
+          model.position.y= -125;
         }
         else {
           mixer._actions[e.action._cacheIndex].crossFadeTo(idleLoop.reset().play(), 0.4)
+          setButtons(true)
         }
       })
 
@@ -113,8 +121,9 @@ const KaynBase = () => {
     }
   }, []);
 
-  function test(index) {
-    if (mixer !== undefined && clips !== undefined) {
+  function AbilityAnim(index) {
+    if (mixer !== undefined && clips !== undefined && buttons) {
+      setButtons(false)
       //#region clips
       const idleAnim = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_idle2.anm"));
       const Q = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_dash.anm"));
@@ -151,6 +160,7 @@ const KaynBase = () => {
           mixer._actions[0].crossFadeTo(E.reset().play(), 0.2);
           break;
         case 5:
+          model.position.y= -400;
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
           break;
@@ -161,23 +171,35 @@ const KaynBase = () => {
   }
 
   return (
-    <div>
-      <div className='absolute' ref={mountRef} style={{ width: "100%", height: "100vh" }}></div>
+    <motion.div initial={{opacity:0}} animate={{opacity:1}}>
+      {/* Animation ground */}
+      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
+      {/* Title */}
       <div className='text-white text-center absolute top-1 left-1/2 transform -translate-x-1/2 border'>
         <div>Kayn</div>
         <div>Base Form</div>
       </div>
-      <div className='text-white w-screen  text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg border'>
+      {/* Abilities */}
+      <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
         <span>Abilities</span>
         <div className='flex justify-center'>
-          <Ability onC={() => test(1)} name="Passive" img={Passiveimg} />
-          <Ability onC={() => test(2)} name="Q" img={Qimg} />
-          <Ability onC={() => test(3)} name="W" img={Wimg} />
-          <Ability onC={() => test(4)} name="E" img={Eimg} />
-          <Ability onC={() => test(5)} name="R" img={Rimg} />
+          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} />
+          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} />
+          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} />
+          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} />
+          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
         </div>
       </div>
-    </div>
+      {/* Transformations */}
+      {/* Assassin */}
+      <NavLink to="/Assassin" className='absolute text-white z-50 left-0 top-0 bottom-0 w-1/12 hover:w-2/12 bg-black hover:bg-blue-600 border border-blue-950 border-l-0 rounded-r-full transition-all duration-500'>
+        <span className=' absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 '>Conquer the Darkin</span>
+      </NavLink>
+      {/* Darkin */}
+      <NavLink to="/Rhaast" className='absolute text-white z-50 right-0 top-0 bottom-0 w-1/12 hover:w-2/12 w bg-black hover:bg-red-600 border border-red-950 border-r-0 rounded-l-full transition-all duration-500'>
+        <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 '>Give in</span>
+      </NavLink>
+    </motion.div>
   )
 };
 

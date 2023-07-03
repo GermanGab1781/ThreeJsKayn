@@ -5,6 +5,8 @@ import HomePage from './pages/Home';
 import PresentationBase from './pages/PresentationBase';
 import MusicPlayer from './components/MusicPlayer';
 import MainTheme from './media/audio/MainTheme.mp3'
+import Assassin from './components/threejs/Assassin';
+import Rhaast from './components/threejs/Rhaast';
 
 function App() {
   const test = new Audio(MainTheme)
@@ -15,6 +17,8 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage theme={test}/>}/>
         <Route path='/KaynBase' element={<PresentationBase/>}/>
+        <Route path='/Assassin' element={<Assassin/>}/>
+        <Route path='/Rhaast' element={<Rhaast/>}/>
       </Routes>
       </BrowserRouter>
     </div>
