@@ -171,11 +171,11 @@ const KaynBase = () => {
   }
 
   return (
-    <motion.div initial={{opacity:0}} animate={{opacity:1}}>
+    <motion.div className='bg-black min-w-screen min-h-screen' initial={{opacity:0}} animate={{opacity:1}}>
       {/* Animation ground */}
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
       {/* Title */}
-      <div className='text-white text-center absolute top-1 left-1/2 transform -translate-x-1/2 border'>
+      <div className='text-white bg-black text-center absolute top-1 left-1/2 transform -translate-x-1/2 border'>
         <div>Kayn</div>
         <div>Base Form</div>
       </div>
