@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import bgImg from '../media/images/BackgroundMain.jpg'
 import { NavLink } from 'react-router-dom'
+import KaynSelect from '../media/audio/Kayn_Select.mp3'
 
-export default function home() {
+export default function Home() {
+
+  const [greeting, setGreeting] = useState(new Audio(KaynSelect));
+
+  useEffect(()=>{
+    greeting.loop=false;
+    greeting.play()
+  },[])
+
   return (
     <div className="text-white" style={{backgroundImage: `url(${bgImg})`,backgroundSize: 'cover',backgroundRepeat: 'no-repeat',backgroundPosition: 'center',height: '100vh',width:'100vw'}}>
         <div className='text-center absolute top-24 left-1/2 transform -translate-x-1/2 text-xl'>

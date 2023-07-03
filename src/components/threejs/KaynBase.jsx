@@ -23,9 +23,9 @@ const KaynBase = () => {
 
     //escena y camara
     const scene = new T.Scene();
-    scene.background = new T.Color("black")
+    scene.background = new T.Color("grey")
     //Add light
-    const light = new T.AmbientLight("red");
+    const light = new T.AmbientLight("orange");
     scene.add(light);
     const camera = new T.PerspectiveCamera(100, width / height, 0.01, 1000);
     camera.position.z = 250;
@@ -54,7 +54,9 @@ const KaynBase = () => {
       //guardo en UseState para poder cambiar animacion OnClick
       setMixer(mixer)
       setClips(clips)
+      console.log(clips)
 
+      //#region Animaciones
       //idle loop
       const clip3 = T.AnimationClip.findByName(clips, "kayn_idle1_loop.anm");
       const idleLoop = mixer.clipAction(clip3);
@@ -64,14 +66,30 @@ const KaynBase = () => {
       //Q part 2
       const Q2 = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_circle.anm"));
       Q2.setLoop(T.LoopOnce)
-      Q2.clampWhenFinished=true;
+      Q2.clampWhenFinished = true;
 
+      //E part 2
+      const E2 = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell3_run.anm"));
+      E2.setLoop(T.LoopRepeat, 2)
+      E2.clampWhenFinished = true;
 
+      //R part 2
+      const R2 = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell4_hit.anm"));
+      R2.setLoop(T.LoopOnce)
+      R2.clampWhenFinished = true;
+      //#endregion
+
+      //MIXER DE ANIMACIONES
       mixer.addEventListener('finished', function (e) {
         //console.log("animation", e.action._clip.name, "finished");
         if (e.action._clip.name === "kayn_spell1_dash.anm") {
           mixer._actions[e.action._cacheIndex].crossFadeTo(Q2.reset().play(), 0.2)
-        }else {
+        } else if (e.action._clip.name === "kayn_spell3_run_in.anm") {
+          mixer._actions[e.action._cacheIndex].crossFadeTo(E2.reset().play(), 0.2)
+        } else if (e.action._clip.name === "kayn_spell4_air.anm") {
+          mixer._actions[e.action._cacheIndex].crossFadeTo(R2.reset().play(), 0.2)
+        }
+        else {
           mixer._actions[e.action._cacheIndex].crossFadeTo(idleLoop.reset().play(), 0.4)
         }
       })
@@ -96,34 +114,45 @@ const KaynBase = () => {
   }, []);
 
   function test(index) {
-    if (mixer !== undefined && clips !== undefined) { 
+    if (mixer !== undefined && clips !== undefined) {
       //#region clips
       const idleAnim = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_idle2.anm"));
       const Q = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_dash.anm"));
       Q.clampWhenFinished = true;
-      const W = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell1_stop.anm"));
+      Q.setLoop(T.LoopOnce)
+      const W = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell2.anm"));
       W.clampWhenFinished = true;
+      W.setLoop(T.LoopOnce)
+      const E = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell3_run_in.anm"));
+      E.clampWhenFinished = true;
+      E.setLoop(T.LoopOnce)
+      const R = mixer.clipAction(T.AnimationClip.findByName(clips, "kayn_spell4_air.anm"));
+      R.clampWhenFinished = true;
+      R.timeScale = 0.2
+      R.setLoop(T.LoopOnce)
       //#endregion
-      console.log(mixer._actions)
+      //console.log(mixer._actions)
       switch (index) {
         case 1:
           idleAnim.setLoop(T.LoopOnce)
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(idleAnim.reset().play(), 0.2);
           break;
-        case 2:          
-          Q.setLoop(T.LoopOnce)
+        case 2:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(Q.reset().play(), 0.2);
           break;
-        case 3:          
-          W.setLoop(T.LoopOnce)
+        case 3:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(W.reset().play(), 0.2);
           break;
         case 4:
+          mixer._actions[0].fadeOut(0.1);
+          mixer._actions[0].crossFadeTo(E.reset().play(), 0.2);
           break;
         case 5:
+          mixer._actions[0].fadeOut(0.1);
+          mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
           break;
         default:
           break;
