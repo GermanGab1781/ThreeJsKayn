@@ -1,31 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import MainTheme from '../media/audio/MainTheme.mp3'
 
-export default function MusicPlayer() {
-  const [sound, setSound] = useState(new Audio(MainTheme));
+export default function MusicPlayer({theme}) {
   const [soundState, setSoundState] = useState(1);
-
-  useEffect(() => {
-    if(soundState === 1){
-      sound.play()
-    }
-  }, [])
 
   //Play--Pause audio
   function play() {
     if (soundState === 1) {
-      sound.pause()
+      theme.pause()
       setSoundState(2)
     } else if (soundState === 2) {
-      sound.play()
+      theme.play()
       setSoundState(1)
     }
   }
   //reset audio
   function reset() {
-    sound.load()
+    theme.load()
     setSoundState(1)
-    sound.play()
+    theme.play()
   }
 
   return (
