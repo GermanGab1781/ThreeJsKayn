@@ -211,11 +211,11 @@ const KaynBase = () => {
       </div>
       {/* Transformations */}
       {/* Assassin */}
-      <NavLink to="/Assassin" className='absolute text-white z-50 left-0 top-0 bottom-0 w-1/12 hover:w-2/12 bg-black hover:bg-blue-600 border border-blue-950 border-l-0 rounded-r-full transition-all duration-500'>
+      <NavLink to="/Assassin" className='absolute text-white z-40 left-0 top-0 bottom-0 w-1/12 hover:w-2/12 bg-black hover:bg-blue-600 border border-blue-950 border-l-0 rounded-r-full transition-all duration-500'>
         <span className=' absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 '>Conquer the Darkin</span>
       </NavLink>
       {/* Darkin */}
-      <NavLink to="/Rhaast" className='absolute text-white z-50 right-0 top-0 bottom-0 w-1/12 hover:w-2/12 w bg-black hover:bg-red-600 border border-red-950 border-r-0 rounded-l-full transition-all duration-500'>
+      <NavLink to="/Rhaast" className='absolute text-white z-40 right-0 top-0 bottom-0 w-1/12 hover:w-2/12 w bg-black hover:bg-red-600 border border-red-950 border-r-0 rounded-l-full transition-all duration-500'>
         <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 '>Give in</span>
       </NavLink>
     </motion.div>

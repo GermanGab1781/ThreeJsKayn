@@ -10,7 +10,8 @@ import Rhaast from './components/threejs/Rhaast';
 
 function App() {
   const mainTheme = new Audio(MainTheme)
-  mainTheme.volume = 0.4
+  mainTheme.volume = 0.6
+  mainTheme.loop = true
   return (
     <div className='font-cinzel'>
       <BrowserRouter>

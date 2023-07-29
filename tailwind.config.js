@@ -5,7 +5,8 @@ module.exports = {
     extend: {
       fontFamily:{
         'cinzel': ['"Cinzel"', 'serif'],
-        'Pmarker':['"Permanent Marker"', 'cursive']
+        'Pmarker':['"Permanent Marker"', 'cursive'],
+        'lugra':['"Lugrasimo"', 'cursive']
       }
     },
   },
