@@ -31,8 +31,8 @@ const Assassin = () => {
     //Add light
     const light = new T.AmbientLight("red");
     scene.add(light);
-    const camera = new T.PerspectiveCamera(100, width / height, 0.01, 10000);
-    camera.position.z = 250;
+    const camera = new T.PerspectiveCamera(50, width / height, 0.01, 10000);
+    camera.position.z = 550;
     camera.position.y = 50;
     scene.add(camera);
 
