@@ -44,7 +44,7 @@ const KaynBase = () => {
     const scene = new T.Scene();
     scene.background = new T.Color("grey")
     //Add light
-    const light = new T.AmbientLight("red");
+    const light = new T.AmbientLight("white");
     scene.add(light);
     const camera = new T.PerspectiveCamera(100, width / height, 0.01, 10000);
     camera.position.z = 250;
