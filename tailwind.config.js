@@ -2,7 +2,13 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        'cinzel': ['"Cinzel"', 'serif'],
+        'Pmarker':['"Permanent Marker"', 'cursive'],
+        'lugra':['"Lugrasimo"', 'cursive']
+      }
+    },
   },
   plugins: [],
 }

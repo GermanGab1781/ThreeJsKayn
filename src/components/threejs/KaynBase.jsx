@@ -16,7 +16,8 @@ import Ewalk from '../../media/audio/base/Kayn_E_Quote.mp3'
 import WGrnt from '../../media/audio/base/Kayn_W_Grunt.mp3'
 import QGrnt from '../../media/audio/base/Kayn_Q_Grunt.mp3'
 
-
+import BlueClick from '../../media/audio/blue/KaynBlueEnter.mp3'
+import RedClick from '../../media/audio/red/RhaastEnter.mp3'
 
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion'
@@ -34,6 +35,9 @@ const KaynBase = () => {
   const Ewall = new Audio(Ewalk)
   const WGrunt = new Audio(WGrnt)
   const QGrunt = new Audio(QGrnt)
+
+  const BlueHoverAudio = new Audio(BlueClick)
+  const RedHoverAudio = new Audio(RedClick)
  
   useEffect(() => {
     const currentRef = mountRef.current;
@@ -46,8 +50,8 @@ const KaynBase = () => {
     //Add light
     const light = new T.AmbientLight("white");
     scene.add(light);
-    const camera = new T.PerspectiveCamera(100, width / height, 0.01, 10000);
-    camera.position.z = 250;
+    const camera = new T.PerspectiveCamera(50, width / height, 0.01, 10000);
+    camera.position.z = 550;
     camera.position.y = 50;
     scene.add(camera);
 
@@ -189,6 +193,9 @@ const KaynBase = () => {
     }
   }
 
+  function hoverQuote(audio){
+    audio.play()
+  }
   return (
     <motion.div className='bg-black min-w-screen min-h-screen' initial={{opacity:0}} animate={{opacity:1}}>
       {/* Animation ground */}
@@ -211,11 +218,11 @@ const KaynBase = () => {
       </div>
       {/* Transformations */}
       {/* Assassin */}
-      <NavLink to="/Assassin" className='absolute text-white z-50 left-0 top-0 bottom-0 w-1/12 hover:w-2/12 bg-black hover:bg-blue-600 border border-blue-950 border-l-0 rounded-r-full transition-all duration-500'>
+      <NavLink onClick={()=>hoverQuote(BlueHoverAudio)} to="/Assassin" className='absolute text-white z-40 left-0 top-0 bottom-0 w-1/12 bg-black hover:bg-blue-600 border border-blue-950 border-l-0 rounded-r-full transition-all duration-500'>
         <span className=' absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 '>Conquer the Darkin</span>
       </NavLink>
       {/* Darkin */}
-      <NavLink to="/Rhaast" className='absolute text-white z-50 right-0 top-0 bottom-0 w-1/12 hover:w-2/12 w bg-black hover:bg-red-600 border border-red-950 border-r-0 rounded-l-full transition-all duration-500'>
+      <NavLink onClick={()=>hoverQuote(RedHoverAudio)} to="/Rhaast" className='absolute text-white z-40 right-0 top-0 bottom-0 w-1/12 bg-black hover:bg-red-600 border border-red-950 border-r-0 rounded-l-full transition-all duration-500'>
         <span className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 '>Give in</span>
       </NavLink>
     </motion.div>

@@ -9,13 +9,15 @@ import Assassin from './components/threejs/Assassin';
 import Rhaast from './components/threejs/Rhaast';
 
 function App() {
-  const test = new Audio(MainTheme)
+  const mainTheme = new Audio(MainTheme)
+  mainTheme.volume = 0.6
+  mainTheme.loop = true
   return (
-    <div>
+    <div className='font-cinzel'>
       <BrowserRouter>
-      <MusicPlayer theme={test}/>
+      <MusicPlayer theme={mainTheme}/>
       <Routes>
-        <Route path='/' element={<HomePage theme={test}/>}/>
+        <Route path='/' element={<HomePage theme={mainTheme}/>}/>
         <Route path='/KaynBase' element={<PresentationBase/>}/>
         <Route path='/Assassin' element={<Assassin/>}/>
         <Route path='/Rhaast' element={<Rhaast/>}/>
