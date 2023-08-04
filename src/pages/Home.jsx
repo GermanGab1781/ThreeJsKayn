@@ -38,7 +38,7 @@ export default function Home({ theme }) {
           ? 'absolute text-center whitespace-nowrap bottom-44 left-1/2 transform -translate-x-1/2 text-lg bg-black bg-opacity-90 border p-5'
           : 'absolute text-center whitespace-nowrap bottom-20 left-1/2 transform -translate-x-1/2 text-lg bg-black bg-opacity-90 border p-5 transition-all ease-in-out duration-[8s]'}
           to="/KaynBase">
-          Conquer the <span className='text-red-700 font-bold'>Darkin</span>
+          <span>Fight for your Soul</span>
         </NavLink>
       </div>
 

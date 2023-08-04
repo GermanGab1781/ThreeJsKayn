@@ -6,7 +6,6 @@ export default function PresentationBase() {
   return (
     <div>
       <KaynModel/>
-
     </div>
   )
 }

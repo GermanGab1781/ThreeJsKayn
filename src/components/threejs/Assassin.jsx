@@ -11,6 +11,7 @@ import Eimg from '../../media/images/abilities/blue/E.png'
 import Rimg from '../../media/images/abilities/blue/R1.png'
 
 import { motion } from 'framer-motion'
+import { NavLink } from 'react-router-dom';
 
 const Assassin = () => {
   const mountRef = useRef(null)
@@ -19,6 +20,7 @@ const Assassin = () => {
   const [idle, setIdle] = useState(undefined);
   const [buttons, setButtons] = useState(true);
   const [model,setModel] = useState(undefined);
+  const [loaded, setLoaded] = useState(false);
  
   useEffect(() => {
     const currentRef = mountRef.current;
@@ -46,6 +48,23 @@ const Assassin = () => {
 
     //controles de camara
     const controls = new OrbitControls(camera, renderer.domElement);
+
+    //Loading Manager
+    T.DefaultLoadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
+      console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+    };
+
+    T.DefaultLoadingManager.onLoad = function () {
+      setLoaded(true);
+    };
+
+    T.DefaultLoadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+      console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+    };
+
+    T.DefaultLoadingManager.onError = function (url) {
+      console.log('There was an error loading ' + url);
+    };
     //#endregion
 
     //Modelo Loader con Animaciones
@@ -172,12 +191,21 @@ const Assassin = () => {
 
   return (
     <motion.div className='bg-black min-w-screen min-h-screen' initial={{opacity:0}} animate={{opacity:1}}>
+      {/* Loading Screen */}
+      <div className={loaded === false
+        ? "absolute bottom-0 top-0 left-0 right-0 bg-blue-900 opacity-100 z-50 transition-all ease-in-out duration-1000"
+        : "absolute bottom-0 top-0 left-0 right-0 bg-blue-900 opacity-0 z-0 transition-all ease-in-out duration-1000"}>
+        <div className='absolute w-screen bg-opacity-25 text-white text-center top-1/3 left-1/2 whitespace-nowrap transform -translate-x-1/2 -translate-y-1/2 text-xl '>
+          <span className='text-blue-500 font-bold text-3xl'>Kayn</span> reaches full potential<br />
+          <span className='text-red-700 font-semibold'>Rhaast</span> falls... 
+          <div className='animate-pulse text-2xl pt-16'>Loading</div>    
+        </div>
+      </div>
       {/* Animation ground */}
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
       {/* Title */}
-      <div className='text-white bg-black text-center absolute top-1 left-1/2 transform -translate-x-1/2 border'>
-        <div>Kayn</div>
-        <div>Base Form</div>
+      <div className='text-white bg-black text-center absolute top-1 left-1/2 transform -translate-x-1/2 text-2xl'>
+        <span className='text-blue-700 font-semibold'>The Shadow Assasin</span>
       </div>
       {/* Abilities */}
       <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
@@ -190,6 +218,9 @@ const Assassin = () => {
           <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
         </div>
       </div>
+      <NavLink to="/KaynBase" className='absolute text-center p-5 top-24 w-1/4 border-b-2 border-blue-700 -translate-y-1/2 text-white z-40 left-0 bg-black hover:bg-blue-900'>
+        <span className='text-blue-500 font-bold'>Go Back</span>
+      </NavLink>
     </motion.div>
   )
 };
