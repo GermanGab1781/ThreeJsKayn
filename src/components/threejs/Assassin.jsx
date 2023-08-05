@@ -19,9 +19,9 @@ const Assassin = () => {
   const [clips, setClips] = useState(undefined);
   const [idle, setIdle] = useState(undefined);
   const [buttons, setButtons] = useState(true);
-  const [model,setModel] = useState(undefined);
+  const [model, setModel] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
- 
+
   useEffect(() => {
     const currentRef = mountRef.current;
     const { clientWidth: width, clientHeight: height } = currentRef;
@@ -73,14 +73,14 @@ const Assassin = () => {
       const model = gltf.scene;
       setModel(model)
       scene.add(model);
-      model.position.set(0,-125,0)
+      model.position.set(0, -125, 0)
       mixer = new T.AnimationMixer(model);
       const clips = gltf.animations;
       //guardo en UseState para poder cambiar animacion OnClick
       setMixer(mixer)
       setClips(clips)
-      const newClips= clips.filter(clip =>{return clip.name })
-      console.log(clips.filter(clip=> clip.name.includes("assassin") ));
+      const newClips = clips.filter(clip => { return clip.name })
+      console.log(clips.filter(clip => clip.name.includes("assassin")));
 
       //#region Animaciones
       //idle loop
@@ -113,7 +113,7 @@ const Assassin = () => {
           mixer._actions[e.action._cacheIndex].crossFadeTo(E2.reset().play(), 0.2)
         } else if (e.action._clip.name === "kayn_spell4_air.anm") {
           mixer._actions[e.action._cacheIndex].crossFadeTo(R2.reset().play(), 0.2)
-          model.position.y= -125;
+          model.position.y = -125;
         }
         else {
           mixer._actions[e.action._cacheIndex].crossFadeTo(idleLoop.reset().play(), 0.4)
@@ -179,7 +179,7 @@ const Assassin = () => {
           mixer._actions[0].crossFadeTo(E.reset().play(), 0.2);
           break;
         case 5:
-          model.position.y= -400;
+          model.position.y = -400;
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
           break;
@@ -190,22 +190,25 @@ const Assassin = () => {
   }
 
   return (
-    <motion.div className='bg-black min-w-screen min-h-screen' initial={{opacity:0}} animate={{opacity:1}}>
+    <motion.div className='bg-black min-w-screen min-h-screen' initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {/* Loading Screen */}
       <div className={loaded === false
         ? "absolute bottom-0 top-0 left-0 right-0 bg-blue-900 opacity-100 z-50 transition-all ease-in-out duration-1000"
         : "absolute bottom-0 top-0 left-0 right-0 bg-blue-900 opacity-0 z-0 transition-all ease-in-out duration-1000"}>
         <div className='absolute w-screen bg-opacity-25 text-white text-center top-1/3 left-1/2 whitespace-nowrap transform -translate-x-1/2 -translate-y-1/2 text-xl '>
           <span className='text-blue-500 font-bold text-3xl'>Kayn</span> reaches full potential<br />
-          <span className='text-red-700 font-semibold'>Rhaast</span> falls... 
-          <div className='animate-pulse text-2xl pt-16'>Loading</div>    
+          <span className='text-red-700 font-semibold'>Rhaast</span> falls...
+          <div className='animate-pulse text-2xl pt-16'>Loading</div>
         </div>
       </div>
       {/* Animation ground */}
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
       {/* Title */}
-      <div className='text-white bg-black text-center absolute top-1 left-1/2 transform -translate-x-1/2 text-2xl'>
-        <span className='text-blue-700 font-semibold'>The Shadow Assasin</span>
+      <div className='text-white grid bg-black text-center whitespace-nowrap'>
+        <span className='text-blue-700 font-semibold p-3 text-2xl'>The Shadow Assasin</span>
+        <NavLink to="/KaynBase" className='text-center p-5 border-b-2 border-blue-700 w-1/2 text-white z-40 bg-black hover:bg-blue-900'>
+          <span className='text-blue-500 font-bold'>Go Back</span>
+        </NavLink>
       </div>
       {/* Abilities */}
       <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
@@ -218,9 +221,6 @@ const Assassin = () => {
           <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
         </div>
       </div>
-      <NavLink to="/KaynBase" className='absolute text-center p-5 top-24 w-1/4 border-b-2 border-blue-700 -translate-y-1/2 text-white z-40 left-0 bg-black hover:bg-blue-900'>
-        <span className='text-blue-500 font-bold'>Go Back</span>
-      </NavLink>
     </motion.div>
   )
 };

@@ -28,7 +28,7 @@ const KaynBase = () => {
   const [clips, setClips] = useState(undefined);
   const [idle, setIdle] = useState(undefined);
   const [buttons, setButtons] = useState(true);
-  const [model,setModel] = useState(undefined);
+  const [model, setModel] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
 
   const RQuote = new Audio(RLaugh);
@@ -39,7 +39,7 @@ const KaynBase = () => {
 
   const BlueHoverAudio = new Audio(BlueClick)
   const RedHoverAudio = new Audio(RedClick)
- 
+
   useEffect(() => {
     const currentRef = mountRef.current;
     const { clientWidth: width, clientHeight: height } = currentRef;
@@ -90,7 +90,7 @@ const KaynBase = () => {
       const model = gltf.scene;
       setModel(model)
       scene.add(model);
-      model.position.set(0,-125,0)
+      model.position.set(0, -125, 0)
       mixer = new T.AnimationMixer(model);
       const clips = gltf.animations;
       //guardo en UseState para poder cambiar animacion OnClick
@@ -130,7 +130,7 @@ const KaynBase = () => {
           mixer._actions[e.action._cacheIndex].crossFadeTo(E2.reset().play(), 0.2)
         } else if (e.action._clip.name === "kayn_spell4_air.anm") {
           mixer._actions[e.action._cacheIndex].crossFadeTo(R2.reset().play(), 0.2)
-          model.position.y= -125;
+          model.position.y = -125;
         }
         else {
           mixer._actions[e.action._cacheIndex].crossFadeTo(idleLoop.reset().play(), 0.4)
@@ -199,10 +199,10 @@ const KaynBase = () => {
           Ewall.play();
           break;
         case 5:
-          model.position.y= -400;
+          model.position.y = -400;
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
-          RInside.play().finally(()=>{RQuote.play();})
+          RInside.play().finally(() => { RQuote.play(); })
           break;
         default:
           break;
@@ -210,47 +210,51 @@ const KaynBase = () => {
     }
   }
 
-  function clickQuote(audio){
+  function clickQuote(audio) {
     audio.play()
   }
   return (
-    <motion.div className='bg-black min-w-screen min-h-screen relative' initial={{opacity:0}} animate={{opacity:1}}>
+    <motion.div className='bg-black min-w-screen min-h-screen relative' initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {/* Loading Screen */}
       <div className={loaded === false
         ? "absolute bottom-0 top-0 left-0 right-0 bg-gray-950 opacity-100 z-50 transition-all ease-in-out duration-1000"
         : "absolute bottom-0 top-0 left-0 right-0 bg-gray-950 opacity-0 z-0 transition-all ease-in-out duration-1000"}>
         <div className='absolute w-screen bg-opacity-25 text-center text-white top-1/3 left-1/2 whitespace-nowrap transform -translate-x-1/2 -translate-y-1/2 text-xl '>
           <span className='text-blue-700 font-semibold text-3xl'>Kayn</span> and <span className='text-red-700 font-semibold text-3xl'>Rhaast</span>
-          <br/><span>Fight for control</span>   
-          <div className='animate-pulse text-2xl pt-16'>Loading</div>    
+          <br /><span>Fight for control</span>
+          <div className='animate-pulse text-2xl pt-16'>Loading</div>
         </div>
       </div>
       {/* Animation ground */}
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
       {/* Title */}
-      <div className='text-white bg-black text-center absolute top-1 left-1/2 transform -translate-x-1/2 text-2xl whitespace-nowrap'>
-        <span className='text-blue-700 font-semibold'>Kayn</span> and <span className='text-red-700 font-semibold'>Rhaast</span>
+      <div className='text-white grid bg-black text-center whitespace-nowrap'>
+        <div className='col-span-2 p-3 text-2xl'>
+          <span className='text-blue-700 font-bold'>Kayn </span>
+           and 
+          <span className='text-red-700 font-bold'> Rhaast</span>
+        </div>
+        {/* Navigation */}
+        {/* Assassin */}
+        <NavLink onClick={() => clickQuote(BlueHoverAudio)} to="/Assassin" className='text-center row-start-2 p-5 border-b-2 border-blue-700 text-white z-40 bg-black hover:bg-blue-900'>
+          <span className='text-blue-500 font-bold'>Realize potential</span>
+        </NavLink>
+        {/* Darkin */}
+        <NavLink onClick={() => clickQuote(RedHoverAudio)} to="/Rhaast" className='text-center row-start-2 p-5 border-b-2 border-red-700 text-white z-40 bg-black hover:bg-red-900'>
+          <span className='text-red-700 font-bold'>Give in</span>
+        </NavLink>
       </div>
       {/* Abilities */}
-      <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
-        <span>Abilities</span>
+      <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg'>
+        <span className='bg-black m-2 p-2 text-2xl'>Abilities</span>
         <div className='flex justify-center'>
-          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} />
-          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} />
-          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} />
-          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} />
-          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
+          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} desc={"Innate: Kayn has a secondary experience bar that tracks progress toward his Darkin and Shadow Assassin forms. He gathers orbs from champion damage rating takedowns and each instance of damage (excluding damage over time) dealt against champions. Once he has earned enough orbs, he unlocks a form based on whether he earned more from Melee or Ranged champions (for Darkin and Shadow Assassin, respectively), with the other form unlocked later."}/>
+          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} desc={"Active: Kayn dashes in the target direction, dealing physical damage to enemies he passes through. He then swings his scythe, dealing the same damage to nearby enemies."}/>
+          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} desc={"Active: Kayn swings his scythe in the target direction, dealing physical damage to enemies hit and slowing them by 90% decaying over 1.5 seconds."}/>
+          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} desc={"Active: Kayn gains movement speed 40% bonus total movement speed, ghosting and the ability to ignore terrain collision for a duration."}/>
+          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} desc={"Active: Kayn vanishes and dashes to a marked enemy champion. Upon arrival, he channels for up to 2.5 seconds, attaching to the target and True Sight revealing them. Umbral Trespass can be recast after 0.75 seconds during the channel, and does so automatically after the duration or if it is interrupted."}/>
         </div>
       </div>
-      {/* Transformations */}
-      {/* Assassin */}
-      <NavLink onClick={()=>clickQuote(BlueHoverAudio)} to="/Assassin" className='absolute text-center p-5 top-24 w-1/2 border-b-2 border-blue-700 -translate-y-1/2 text-white z-40 left-0 bg-black hover:bg-blue-900'>
-        <span className='text-blue-500 font-bold'>Realize potential</span>
-      </NavLink>
-      {/* Darkin */}
-      <NavLink onClick={()=>clickQuote(RedHoverAudio)} to="/Rhaast" className='absolute text-center p-5 top-24 w-1/2 border-b-2 border-red-700 -translate-y-1/2 text-white z-40 right-0 bg-black hover:bg-red-900'>
-        <span className='text-red-700 font-bold'>Give in</span>
-      </NavLink>
     </motion.div>
   )
 };

@@ -206,14 +206,17 @@ const Rhaast = () => {
         <div className='absolute w-screen bg-opacity-25 text-center text-slate-300 top-1/3 left-1/2 whitespace-nowrap transform -translate-x-1/2 -translate-y-1/2 text-xl '>
           <span className='text-blue-700 font-semibold'>Kayn</span> has been corrupted... <br />
           <span className='text-red-700 font-bold text-3xl'>RHAAST </span>takes over
-          <div className='animate-pulse text-2xl pt-16'>Loading</div>       
+          <div className='animate-pulse text-2xl pt-16'>Loading</div>
         </div>
       </div>
       {/* Animation ground */}
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
       {/* Title */}
-      <div className='text-white bg-black text-center absolute top-1 left-1/2 transform -translate-x-1/2 text-2xl'>
-        <span className='text-red-700 font-semibold'>Rhaast</span>
+      <div className='text-white grid bg-black text-center whitespace-nowrap'>
+        <span className='text-red-700 font-semibold p-3 text-2xl'>Rhaast</span>
+        <NavLink to="/KaynBase" className='text-center p-5 w-1/2 border-b-2 border-red-700 text-white z-40 bg-black hover:bg-red-900'>
+          <span className='text-red-500 font-bold'>Go Back</span>
+        </NavLink>
       </div>
       {/* Abilities */}
       <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
@@ -226,9 +229,6 @@ const Rhaast = () => {
           <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
         </div>
       </div>
-      <NavLink to="/KaynBase" className='absolute text-center p-5 top-24 w-1/4 border-b-2 border-red-700 -translate-y-1/2 text-white z-40 left-0 bg-black hover:bg-red-900'>
-        <span className='text-red-500 font-bold'>Go Back</span>
-      </NavLink>
     </motion.div>
   )
 };
