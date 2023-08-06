@@ -252,7 +252,7 @@ const KaynBase = () => {
           <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} desc={"Active: Kayn dashes in the target direction, dealing physical damage to enemies he passes through. He then swings his scythe, dealing the same damage to nearby enemies."}/>
           <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} desc={"Active: Kayn swings his scythe in the target direction, dealing physical damage to enemies hit and slowing them by 90% decaying over 1.5 seconds."}/>
           <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} desc={"Active: Kayn gains movement speed 40% bonus total movement speed, ghosting and the ability to ignore terrain collision for a duration."}/>
-          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} desc={"Active: Kayn vanishes and dashes to a marked enemy champion. Upon arrival, he channels for up to 2.5 seconds, attaching to the target and True Sight revealing them. Umbral Trespass can be recast after 0.75 seconds during the channel, and does so automatically after the duration or if it is interrupted."}/>
+          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} desc={"Active: Kayn vanishes and dashes to a marked enemy champion. Upon arrival, he channels for up to 2.5 seconds, attaching to the target and revealing them. Umbral Trespass can be recast after 0.75 seconds during the channel, and does so automatically after the duration or if it is interrupted."}/>
         </div>
       </div>
     </motion.div>
