@@ -10,6 +10,12 @@ import Wimg from '../../media/images/abilities/blue/W.png'
 import Eimg from '../../media/images/abilities/blue/E.png'
 import Rimg from '../../media/images/abilities/blue/R1.png'
 
+import RLaugh from '../../media/audio/blue/KaynAssassin_R_Laugh.mp3'
+import RIn from '../../media/audio/blue/KaynAssassin_R_in.mp3'
+import Ewalk from '../../media/audio/blue/KaynAssassin_E_Quote.mp3'
+import WGrnt from '../../media/audio/blue/KaynAssassin_W_Grunt.mp3'
+import QGrnt from '../../media/audio/blue/KaynAssassin_Q_Grunt.mp3'
+
 import { motion } from 'framer-motion'
 import { NavLink } from 'react-router-dom';
 
@@ -21,6 +27,13 @@ const Assassin = () => {
   const [buttons, setButtons] = useState(true);
   const [model, setModel] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
+
+  const RQuote = new Audio(RLaugh);
+  const RInside = new Audio(RIn);
+  const Ewall = new Audio(Ewalk)
+  const WGrunt = new Audio(WGrnt)
+  const QGrunt = new Audio(QGrnt)
+
 
   useEffect(() => {
     const currentRef = mountRef.current;
@@ -169,19 +182,23 @@ const Assassin = () => {
         case 2:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(Q.reset().play(), 0.2);
+          QGrunt.play()
           break;
         case 3:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(W.reset().play(), 0.2);
+          WGrunt.play();
           break;
         case 4:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(E.reset().play(), 0.2);
+          Ewall.play();
           break;
         case 5:
           model.position.y = -400;
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
+          RInside.play().finally(() => { RQuote.play(); })
           break;
         default:
           break;
@@ -214,11 +231,11 @@ const Assassin = () => {
       <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
         <span>Abilities</span>
         <div className='flex justify-center'>
-          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} />
-          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} />
-          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} />
-          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} />
-          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
+          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} desc={"Shadow Assassin Bonus: If Kayn has been out of combat with enemy champions for over 8 seconds, or he casts Umbral Trespass, he deals 15% / 45% (based on level) of post-mitigation damage dealt against enemy champions as bonus magic damage, lasting for 3 seconds upon entering combat and also applying on the first instance of damage dealt. If this effect is ready, it will not be lost by taking damage."} />
+          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} desc={"Active: Kayn dashes in the target direction, dealing physical damage to enemies he passes through. He then swings his scythe, dealing the same damage to nearby enemies."} />
+          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} desc={"Shadow Assassin Bonus: Blade's Reach's radius is extended by 200 units. Kayn conjures an untargetable shadow at the casting position to perform Blade's Reach's sweep over 0.55 seconds in his stead, removing the ability's cast time."} />
+          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} desc={"Shadow Assassin Bonus: Shadow Step's cooldown is reduced to 10 seconds at all ranks. Kayn gains 100% slow resist while active and, upon entering terrain, the bonus total movement speed is increased to 70% for the remaining duration."} />
+          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} desc={"Shadow Assassin Bonus: Umbral Trespass gains 200 bonus cast range and emerge range. Additionally, emerging will reset The Passive's cooldown."} />
         </div>
       </div>
     </motion.div>

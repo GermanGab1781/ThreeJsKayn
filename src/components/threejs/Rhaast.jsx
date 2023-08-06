@@ -4,11 +4,18 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import MODEL from '../../media/models/Rhaast.glb';
 import Ability from '../../components/Ability'
+
 import Passiveimg from '../../media/images/abilities/base/Passive.png'
 import Qimg from '../../media/images/abilities/red/Q.png'
 import Wimg from '../../media/images/abilities/red/W.png'
 import Eimg from '../../media/images/abilities/red/E.png'
 import Rimg from '../../media/images/abilities/red/R1.png'
+
+import RLaugh from '../../media/audio/red/Rhaast_R_Laugh.mp3'
+import RIn from '../../media/audio/red/Rhaast_R_in.mp3'
+import Ewalk from '../../media/audio/red/Rhaast_E_Quote.mp3'
+import WGrnt from '../../media/audio/red/Rhaast_W_Grunt.mp3'
+import QGrnt from '../../media/audio/red/Rhaast_Q_Grunt.mp3'
 
 import { motion } from 'framer-motion'
 import { NavLink } from 'react-router-dom';
@@ -21,6 +28,12 @@ const Rhaast = () => {
   const [buttons, setButtons] = useState(true);
   const [model, setModel] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
+  
+  const RQuote = new Audio(RLaugh);
+  const RInside = new Audio(RIn);
+  const Ewall = new Audio(Ewalk)
+  const WGrunt = new Audio(WGrnt)
+  const QGrunt = new Audio(QGrnt)
 
 
   useEffect(() => {
@@ -177,19 +190,23 @@ const Rhaast = () => {
         case 2:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(Q.reset().play(), 0.2);
+          QGrunt.play()
           break;
         case 3:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(W.reset().play(), 0.2);
+          WGrunt.play();
           break;
         case 4:
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(E.reset().play(), 0.2);
+          Ewall.play();
           break;
         case 5:
           model.position.y = -400;
           mixer._actions[0].fadeOut(0.1);
           mixer._actions[0].crossFadeTo(R.reset().play(), 0.2);
+          RInside.play().finally(() => { RQuote.play(); })
           break;
         default:
           break;
@@ -222,11 +239,11 @@ const Rhaast = () => {
       <div className='text-white w-screen text-center absolute bottom-12 left-1/2 transform -translate-x-1/2 text-lg '>
         <span>Abilities</span>
         <div className='flex justify-center'>
-          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} />
-          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} />
-          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} />
-          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} />
-          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} />
+          <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} desc={"Darkin Bonus: Rhaast heals for 20% / 30% (based on level) of the post-mitigation Attack damage physical damage that he deals to enemy champions with his abilities."} />
+          <Ability onC={() => AbilityAnim(2)} name="Q" img={Qimg} desc={"Darkin Bonus: Reaping Slash's damage is modified to deal 65% AD (+ 5% (+ 3.5% per 100 bonus AD) of the target's maximum health) physical damage for both instances."} />
+          <Ability onC={() => AbilityAnim(3)} name="W" img={Wimg} desc={"Darkin Bonus: Blade's Reach knocks up enemies hit for 1 second."} />
+          <Ability onC={() => AbilityAnim(4)} name="E" img={Eimg} desc={"Active: Rhaast gains movement speed 40% bonus total movement speed, ghosting and the ability to ignore terrain collision for a duration."} />
+          <Ability onC={() => AbilityAnim(5)} name="R" img={Rimg} desc={"Darkin Bonus: Umbral Trespass is modified to deal physical damage equal to 15% (+ 13% per 100 bonus AD) of the target's maximum health, and heals him for 9.75% (+ 8.45% per 100 bonus AD) of target's maximum health."} />
         </div>
       </div>
     </motion.div>
