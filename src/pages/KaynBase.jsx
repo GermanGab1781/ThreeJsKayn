@@ -273,7 +273,7 @@ const KaynBase = () => {
         </NavLink>
       </div>
       {/* Abilities */}
-      <div className='text-white w-screen text-center absolute bottom-16 left-1/2 transform -translate-x-1/2 text-lg'>
+      <div className='text-white w-screen text-center absolute md:bottom-16 bottom-20 left-1/2 transform -translate-x-1/2 text-lg'>
         <span>Abilities</span>
         <div className='flex justify-center'>
           <Ability onC={() => AbilityAnim(1)} name="Passive" img={Passiveimg} desc={"Innate: Kayn has a secondary experience bar that tracks progress toward his Darkin and Shadow Assassin forms. He gathers orbs from champion damage rating takedowns and each instance of damage (excluding damage over time) dealt against champions. Once he has earned enough orbs, he unlocks a form based on whether he earned more from Melee or Ranged champions (for Darkin and Shadow Assassin, respectively), with the other form unlocked later."} />
