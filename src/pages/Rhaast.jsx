@@ -2,20 +2,20 @@ import { useRef, useEffect, useState } from 'react';
 import * as T from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import MODEL from '../../media/models/Rhaast.glb';
-import Ability from '../../components/Ability'
+import MODEL from '../media/models/Rhaast.glb';
+import Ability from '../components/Ability'
 
-import Passiveimg from '../../media/images/abilities/base/Passive.png'
-import Qimg from '../../media/images/abilities/red/Q.png'
-import Wimg from '../../media/images/abilities/red/W.png'
-import Eimg from '../../media/images/abilities/red/E.png'
-import Rimg from '../../media/images/abilities/red/R1.png'
+import Passiveimg from '../media/images/abilities/red/Passive.png'
+import Qimg from '../media/images/abilities/red/Q.png'
+import Wimg from '../media/images/abilities/red/W.png'
+import Eimg from '../media/images/abilities/red/E.png'
+import Rimg from '../media/images/abilities/red/R1.png'
 
-import RLaugh from '../../media/audio/red/Rhaast_R_Laugh.mp3'
-import RIn from '../../media/audio/red/Rhaast_R_in.mp3'
-import Ewalk from '../../media/audio/red/Rhaast_E_Quote.mp3'
-import WGrnt from '../../media/audio/red/Rhaast_W_Grunt.mp3'
-import QGrnt from '../../media/audio/red/Rhaast_Q_Grunt.mp3'
+import RLaugh from '../media/audio/red/Rhaast_R_Laugh.mp3'
+import RIn from '../media/audio/red/Rhaast_R_in.mp3'
+import Ewalk from '../media/audio/red/Rhaast_E_Quote.mp3'
+import WGrnt from '../media/audio/red/Rhaast_W_Grunt.mp3'
+import QGrnt from '../media/audio/red/Rhaast_Q_Grunt.mp3'
 
 import { motion } from 'framer-motion'
 import { NavLink } from 'react-router-dom';
@@ -28,7 +28,7 @@ const Rhaast = () => {
   const [buttons, setButtons] = useState(true);
   const [model, setModel] = useState(undefined);
   const [loaded, setLoaded] = useState(false);
-  
+
   const RQuote = new Audio(RLaugh);
   const RInside = new Audio(RIn);
   const Ewall = new Audio(Ewalk)
@@ -43,7 +43,7 @@ const Rhaast = () => {
 
     //escena y camara
     const scene = new T.Scene();
-    scene.background = new T.Color("grey")
+    scene.background = new T.Color("black")
     //Add light
     const light = new T.AmbientLight("white");
     scene.add(light);
@@ -51,6 +51,14 @@ const Rhaast = () => {
     camera.position.z = 550;
     camera.position.y = 50;
     scene.add(camera);
+
+    //floor
+    const geometry = new T.PlaneGeometry(3000, 900, 8, 8);
+    const material = new T.MeshBasicMaterial({ color: "#6b0606", side: T.DoubleSide });
+    const floorRed = new T.Mesh(geometry, material);
+    scene.add(floorRed)
+    floorRed.position.set(0, -125, 0)
+    floorRed.rotateX(- Math.PI / 2);
 
     //reloj
     const clock = new T.Clock();
@@ -62,6 +70,9 @@ const Rhaast = () => {
 
     //controles de camara
     const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enablePan = false;
+    controls.minPolarAngle = 1;
+    controls.maxPolarAngle = 1.6;
 
     //Loading Manager
     T.DefaultLoadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
