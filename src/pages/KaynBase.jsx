@@ -257,7 +257,7 @@ const KaynBase = () => {
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ' ref={mountRef} style={{ width: "100%", height: "80vh" }}></div>
       {/* Title */}
       <div className='text-white grid bg-black text-center whitespace-nowrap'>
-        <div className='col-span-2 p-3 text-2xl'>
+        <div className='col-span-2 pt-1 text-2xl'>
           <span className='text-blue-700 font-bold'>Kayn </span>
           and
           <span className='text-red-700 font-bold'> Rhaast</span>
