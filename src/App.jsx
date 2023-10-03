@@ -7,6 +7,7 @@ import HomePage from './pages/Home';
 import KaynBase from './pages/KaynBase';
 import Assassin from './pages/Assassin';
 import Rhaast from './pages/Rhaast';
+import PortfolioButton from './components/PortfolioButton';
 
 function App() {
   const mainTheme = new Audio(MainTheme)
@@ -17,6 +18,7 @@ function App() {
     <div className='font-cinzel'>
       <BrowserRouter>
         <MusicPlayer theme={mainTheme} />
+        <PortfolioButton />
         <Routes>
           <Route path='/' element={<HomePage theme={mainTheme} />} />
           <Route path='/KaynBase' element={<KaynBase />} />
